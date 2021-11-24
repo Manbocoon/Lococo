@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Mococo>
+  <Controls>
+    <Ignore>True</Ignore>
+    <Opacity>55</Opacity>
+    <URL>https://lostark.inven.co.kr/dataninfo/world/?code=10201</URL>
+    <DualMonitor>False</DualMonitor>
+  </Controls>
+  <Overlay>
+    <Left>0</Left>
+    <Top>0</Top>
+    <Width>500</Width>
+    <Height>500</Height>
+  </Overlay>
+</Mococo>

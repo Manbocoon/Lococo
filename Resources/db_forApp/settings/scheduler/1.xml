@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Character>
+  <Data>
+    <Name>트래킹에임</Name>
+    <Class>건슬링어</Class>
+    <Level>1325.83</Level>
+    <Weekly>
+      <EmptyValue>NULL</EmptyValue>
+      <WeeklyEpona_Value_1>X</WeeklyEpona_Value_1>
+      <WeeklyEpona_Value_2>X</WeeklyEpona_Value_2>
+      <WeeklyEpona_Value_3>X</WeeklyEpona_Value_3>
+      <AbyssDungeon_Value_7>2021-6-16</AbyssDungeon_Value_7>
+      <AbyssDungeon_Value_8>2021-6-16</AbyssDungeon_Value_8>
+      <AbyssDungeon_Value_9>2021-6-16</AbyssDungeon_Value_9>
+      <AbyssDungeon_Value_10>X</AbyssDungeon_Value_10>
+      <AbyssDungeon_Value_11>X</AbyssDungeon_Value_11>
+    </Weekly>
+    <Daily>
+      <EmptyValue>NULL</EmptyValue>
+      <Epona_Value_1>X</Epona_Value_1>
+      <Epona_Value_2>X</Epona_Value_2>
+      <Epona_Value_3>X</Epona_Value_3>
+      <Epona_RestGuage>60</Epona_RestGuage>
+      <Guardian_Value_1>X</Guardian_Value_1>
+      <Guardian_Value_2>X</Guardian_Value_2>
+      <Guardian_RestGuage>40</Guardian_RestGuage>
+      <ChaosDungeon_Value_1>X</ChaosDungeon_Value_1>
+      <ChaosDungeon_Value_2>X</ChaosDungeon_Value_2>
+      <ChaosDungeon_RestGuage>40</ChaosDungeon_RestGuage>
+      <RestGuage_Date>2021-6-20</RestGuage_Date>
+    </Daily>
+  </Data>
+</Character>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Character>
+  <Data>
+    <Name>뭐야빨리돌려줘요</Name>
+    <Class>창술사</Class>
+    <Level>1415.00</Level>
+    <Weekly>
+      <EmptyValue>NULL</EmptyValue>
+      <WeeklyEpona_Value_1>2021-6-16</WeeklyEpona_Value_1>
+      <WeeklyEpona_Value_2>X</WeeklyEpona_Value_2>
+      <WeeklyEpona_Value_3>X</WeeklyEpona_Value_3>
+      <AbyssRaid_Value_3>2021-6-16</AbyssRaid_Value_3>
+      <CorpsCommanderRaid_Value_1>2021-6-16</CorpsCommanderRaid_Value_1>
+    </Weekly>
+    <Daily>
+      <EmptyValue>NULL</EmptyValue>
+      <Epona_Value_1>2021-6-20</Epona_Value_1>
+      <Epona_Value_2>X</Epona_Value_2>
+      <Epona_Value_3>X</Epona_Value_3>
+      <Epona_RestGuage>10</Epona_RestGuage>
+      <Guardian_Value_1>2021-6-20</Guardian_Value_1>
+      <Guardian_Value_2>X</Guardian_Value_2>
+      <Guardian_RestGuage>70</Guardian_RestGuage>
+      <ChaosDungeon_Value_1>2021-6-20</ChaosDungeon_Value_1>
+      <ChaosDungeon_Value_2>X</ChaosDungeon_Value_2>
+      <ChaosDungeon_RestGuage>80</ChaosDungeon_RestGuage>
+      <RestGuage_Date>2021-6-20</RestGuage_Date>
+    </Daily>
+  </Data>
+</Character>

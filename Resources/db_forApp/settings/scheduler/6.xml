@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Character>
+  <Data>
+    <Name>단비</Name>
+    <Class>창술사</Class>
+    <Level>1516.67</Level>
+    <Weekly>
+      <EmptyValue>NULL</EmptyValue>
+      <WeeklyEpona_Value_1>X</WeeklyEpona_Value_1>
+      <WeeklyEpona_Value_2>X</WeeklyEpona_Value_2>
+      <WeeklyEpona_Value_3>X</WeeklyEpona_Value_3>
+      <CorpsCommanderRaid_Value_1>X</CorpsCommanderRaid_Value_1>
+      <CorpsCommanderRaid_Value_2>X</CorpsCommanderRaid_Value_2>
+      <CorpsCommanderRaid_Value_3>X</CorpsCommanderRaid_Value_3>
+    </Weekly>
+    <Daily>
+      <EmptyValue>NULL</EmptyValue>
+      <Epona_Value_1>X</Epona_Value_1>
+      <Epona_Value_2>X</Epona_Value_2>
+      <Epona_Value_3>X</Epona_Value_3>
+      <Epona_RestGuage>0</Epona_RestGuage>
+      <Guardian_Value_1>X</Guardian_Value_1>
+      <Guardian_Value_2>X</Guardian_Value_2>
+      <Guardian_RestGuage>0</Guardian_RestGuage>
+      <ChaosDungeon_Value_1>X</ChaosDungeon_Value_1>
+      <ChaosDungeon_Value_2>X</ChaosDungeon_Value_2>
+      <ChaosDungeon_RestGuage>0</ChaosDungeon_RestGuage>
+      <RestGuage_Date>2021-6-17</RestGuage_Date>
+    </Daily>
+  </Data>
+</Character>

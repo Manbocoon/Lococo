@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Scheduler>
+  <Contents>
+  
+  
+    <Weekly>
+      <AbyssRaid Index="1" Name="미스틱">
+        <Level-Minimum>370</Level-Minimum>
+        <Level-Maximum>824.99</Level-Maximum>
+        <Reward-Gold>240</Reward-Gold>
+      </AbyssRaid>
+      <AbyssRaid Index="2" Name="카이슈테르">
+        <Level-Minimum>870</Level-Minimum>
+        <Level-Maximum>1324.99</Level-Maximum>
+        <Reward-Gold>400</Reward-Gold>
+      </AbyssRaid>
+      <AbyssRaid Index="3" Name="아르고스">
+        <Level-Minimum>1370</Level-Minimum>
+        <Level-Maximum>1474.99</Level-Maximum>
+        <Reward-Gold>3300</Reward-Gold>
+      </AbyssRaid>
+	  
+	  
+	  
+      <AbyssDungeon Index="1" Name="마수의 골짜기">
+        <Level-Minimum>325</Level-Minimum>
+        <Level-Maximum>414.99</Level-Maximum>
+        <Reward-Gold>79</Reward-Gold>
+      </AbyssDungeon>
+      <AbyssDungeon Index="2" Name="사령술사의 근원">
+        <Level-Minimum>325</Level-Minimum>
+        <Level-Maximum>414.99</Level-Maximum>
+        <Reward-Gold>93</Reward-Gold>
+      </AbyssDungeon>
+	  
+	  <AbyssDungeon Index="3" Name="비틀린 군주의 회랑">
+        <Level-Minimum>415</Level-Minimum>
+        <Level-Maximum>869.99</Level-Maximum>
+        <Reward-Gold>120</Reward-Gold>
+      </AbyssDungeon>
+	  <AbyssDungeon Index="4" Name="몽환궁전 힐데브리뉴">
+        <Level-Minimum>415</Level-Minimum>
+        <Level-Maximum>869.99</Level-Maximum>
+        <Reward-Gold>160</Reward-Gold>
+      </AbyssDungeon>
+	  
+	  <AbyssDungeon Index="5" Name="탄식의 길">
+        <Level-Minimum>825</Level-Minimum>
+        <Level-Maximum>914.99</Level-Maximum>
+        <Reward-Gold>260</Reward-Gold>
+      </AbyssDungeon>
+	  <AbyssDungeon Index="6" Name="추락한 긍지의 용광로">
+        <Level-Minimum>825</Level-Minimum>
+        <Level-Maximum>914.99</Level-Maximum>
+        <Reward-Gold>140</Reward-Gold>
+      </AbyssDungeon>
+	  
+	  <AbyssDungeon Index="7" Name="태만의 바다">
+        <Level-Minimum>915</Level-Minimum>
+        <Level-Maximum>1369.99</Level-Maximum>
+        <Reward-Gold>180</Reward-Gold>
+	  </AbyssDungeon>
+	  <AbyssDungeon Index="8" Name="고요한 카르코사">
+        <Level-Minimum>915</Level-Minimum>
+        <Level-Maximum>1369.99</Level-Maximum>
+        <Reward-Gold>220</Reward-Gold>
+      </AbyssDungeon>
+	  <AbyssDungeon Index="9" Name="아르카디아의 성역">
+        <Level-Minimum>915</Level-Minimum>
+        <Level-Maximum>1369.99</Level-Maximum>
+        <Reward-Gold>240</Reward-Gold>
+      </AbyssDungeon>
+	  
+	  <AbyssDungeon Index="10" Name="아이라의 눈">
+        <Level-Minimum>1325</Level-Minimum>
+        <Level-Maximum>1414.99</Level-Maximum>
+        <Reward-Gold>1250</Reward-Gold>
+		<Reward-Gold-Hard>1400</Reward-Gold-Hard>
+      </AbyssDungeon>
+	  <AbyssDungeon Index="11" Name="오레하 프라바사">
+        <Level-Minimum>1325</Level-Minimum>
+        <Level-Maximum>1414.99</Level-Maximum>
+        <Reward-Gold>1350</Reward-Gold>
+		<Reward-Gold-Hard>1500</Reward-Gold-Hard>
+      </AbyssDungeon>
+
+
+	  <CorpsCommanderRaid Index="1" Name="마수군단장 발탄">
+        <Level-Minimum>1415</Level-Minimum>
+        <Level-Maximum>1575.00</Level-Maximum>
+        <Reward-Gold>3300</Reward-Gold>
+		<Reward-Gold-Hard>4500</Reward-Gold-Hard>
+      </CorpsCommanderRaid>
+	  <CorpsCommanderRaid Index="2" Name="욕망군단장 비아키스">
+        <Level-Minimum>1430</Level-Minimum>
+        <Level-Maximum>1575.00</Level-Maximum>
+        <Reward-Gold>3300</Reward-Gold>
+		<Reward-Gold-Hard>4500</Reward-Gold-Hard>
+      </CorpsCommanderRaid>
+	  <CorpsCommanderRaid Index="3" Name="광기군단장 쿠크세이튼">
+        <Level-Minimum>1475</Level-Minimum>
+        <Level-Maximum>1575.00</Level-Maximum>
+        <Reward-Gold>4500</Reward-Gold>
+      </CorpsCommanderRaid>
+	  
+    </Weekly>
+	
+  </Contents>
+</Scheduler>
