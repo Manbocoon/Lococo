@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Browser>
+  <Controls>
+    <Ignore>False</Ignore>
+    <Opacity>80</Opacity>
+    <URL>https://lostark.inven.co.kr/dataninfo/world/?code=10201</URL>
+  </Controls>
+  <Overlay>
+    <Bounds>-1, -1, 484, 461</Bounds>
+  </Overlay>
+</Browser>

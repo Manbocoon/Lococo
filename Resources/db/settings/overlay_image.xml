@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Image>
+  <Controls>
+    <Opacity>80</Opacity>
+    <imgPath>
+    </imgPath>
+  </Controls>
+  <Overlay>
+    <Bounds>0, 0, 500, 500</Bounds>
+  </Overlay>
+</Image>

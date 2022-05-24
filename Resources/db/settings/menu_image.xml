@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Image>
+  <Controls>
+    <Ignore>False</Ignore>
+    <Opacity>80</Opacity>
+    <Width>500</Width>
+    <Height>500</Height>
+    <ImagePath>
+    </ImagePath>
+  </Controls>
+  <Overlay>
+    <Location>0, 0</Location>
+  </Overlay>
+</Image>
