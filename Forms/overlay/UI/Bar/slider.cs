@@ -20,6 +20,9 @@ using System.Security;
 
 namespace Lococo.Forms.overlay.UI.Bar
 {
+    /// <summary>
+    /// 모든 오버레이의 불투명도 설정 창
+    /// </summary>
     public partial class slider : Form
     {
         #region Windows API
@@ -31,37 +34,7 @@ namespace Lococo.Forms.overlay.UI.Bar
 
 
         #region Global Variables
-        public Form ParentForm { get; set; }
-
         public byte start_value { get; set; } = 80;
-
-        private byte opacityUI_value = 80;
-        public byte opacityUI
-        {
-            get
-            {
-                Invoke((MethodInvoker)delegate
-                {
-                    opacityUI_value = (byte)(this.Opacity * 100);
-                });
-
-                return opacityUI_value;
-            }
-
-            set
-            {
-                opacityUI_value = value;
-
-                if (IsHandleCreated)
-                {
-                    Opacity = (double)value / 100;
-                }
-            }
-        }
-        #endregion
-
-        #region Private Variables
-        private readonly string appPath = Application.StartupPath;
         #endregion
 
 
@@ -101,17 +74,7 @@ namespace Lococo.Forms.overlay.UI.Bar
 
         private void opacity_ValueChanged(object sender, EventArgs e)
         {
-            if (ParentForm is o_browser)
-            {
-                ((o_browser)ParentForm).opacity = (byte)opacity.Value;
-            }
-
-            else if (ParentForm is o_image_sizer)
-            {
-                o_image real_parent = ((o_image_sizer)ParentForm).ParentForm;
-
-                real_parent.opacity = (byte)opacity.Value;
-            }
+            _public.SetOpacity(Owner, (byte)opacity.Value);
         }
 
     }
