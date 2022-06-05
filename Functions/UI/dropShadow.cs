@@ -113,17 +113,27 @@ namespace Lococo.Functions.UI
         {
             var v = 2;
 
-            DwmSetWindowAttribute(form.Handle, 2, ref v, 4);
-
-            MARGINS margins = new MARGINS()
+            if (!Program.IsActivated(form))
             {
-                bottomHeight = thickness_botom,
-                leftWidth = thickness_left,
-                rightWidth = thickness_right,
-                topHeight = thickness_top
-            };
+                return;
+            }
 
-            DwmExtendFrameIntoClientArea(form.Handle, ref margins);
+
+            form.Invoke((MethodInvoker)delegate 
+            {
+                DwmSetWindowAttribute(form.Handle, 2, ref v, 4);
+
+                MARGINS margins = new MARGINS()
+                {
+                    bottomHeight = thickness_botom,
+                    leftWidth = thickness_left,
+                    rightWidth = thickness_right,
+                    topHeight = thickness_top
+                };
+
+                DwmExtendFrameIntoClientArea(form.Handle, ref margins);
+            });
+
         }
 
         #endregion
