@@ -38,7 +38,7 @@ namespace Lococo.Forms.overlay
             this.ClientSize = new System.Drawing.Size(484, 461);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(300, 300);
+            this.MinimumSize = new System.Drawing.Size(100, 100);
             this.Name = "o_image_sizer";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
