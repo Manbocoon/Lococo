@@ -4,20 +4,17 @@
 
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 
 
 namespace Lococo.Functions.UI
 {
+    /// <summary>
+    /// 윈도우 기본 스크롤바가 너무 못생겨서 만든 사용자 정의 컨트롤
+    /// </summary>
     public partial class Slider : Control
     {
         private float _radius;
