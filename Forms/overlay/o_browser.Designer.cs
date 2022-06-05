@@ -58,7 +58,6 @@ namespace Lococo.Forms.overlay
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Lococo - Overlay";
-            this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
             this.Load += new System.EventHandler(this.overlayForm_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.overlayForm_Paint);
             this.Move += new System.EventHandler(this.overlayForm_Move);
