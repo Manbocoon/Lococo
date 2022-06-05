@@ -10,6 +10,9 @@ using System.Windows.Forms;
 
 namespace Lococo.Functions.UI
 {
+    /// <summary>
+    /// 윈도우 기본 체크박스가 못생겨서 만든 사용자 정의 컨트롤
+    /// </summary>
     class flatCheckBox : CheckBox
     {
         private Color checkBoxBackColor = Color.FromArgb(22, 22, 22);
