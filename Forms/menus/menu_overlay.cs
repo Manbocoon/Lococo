@@ -186,6 +186,9 @@ namespace Lococo.Forms.menus
                     cacheDirectory = dirPath + "\\EBWebView";
             }
 
+            if (cacheDirectory == null)
+                return;
+
             string[] dir_exceptions = new string[] { "Default", "GrShaderCache", "ShaderCache" };
             string[] rootDirs = Directory.GetDirectories(cacheDirectory);
             foreach (string dir in rootDirs)
