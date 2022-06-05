@@ -24,7 +24,6 @@ namespace Lococo.Forms.overlay.UI.Bar
     {
 
         #region Global Variables
-        public o_browser ParentForm { get; set; }
 
         public ushort zoomValue
         {
@@ -40,30 +39,6 @@ namespace Lococo.Forms.overlay.UI.Bar
                     changedByParent = true;
                     zoom.Value = value;
                     changedByParent = false;
-                }
-            }
-        }
-
-        private byte opacityUI_value = 80;
-        public byte opacityUI
-        {
-            get
-            {
-                Invoke((MethodInvoker)delegate
-                {
-                    opacityUI_value = (byte)(this.Opacity * 100);
-                });
-
-                return opacityUI_value;
-            }
-
-            set
-            {
-                opacityUI_value = value;
-
-                if (IsHandleCreated)
-                {
-                    Opacity = (double)value / 100;
                 }
             }
         }
@@ -92,7 +67,7 @@ namespace Lococo.Forms.overlay.UI.Bar
         #endregion
 
 
-        private bool checkURLValid(string source)
+        private bool IsValidURL(string source)
         {
             bool result = false;
 
@@ -108,7 +83,7 @@ namespace Lococo.Forms.overlay.UI.Bar
 
         private void LoadSettings()
         {
-            zoom.Value = ParentForm.zoom;
+            zoom.Value = ((o_browser)Owner).zoom;
         }
 
 
@@ -120,9 +95,9 @@ namespace Lococo.Forms.overlay.UI.Bar
 
             this.WindowState = FormWindowState.Normal;
 
-            if (Program.IsActivated(ParentForm))
+            if (Program.IsActivated(Owner))
             {
-                ParentForm.ChildForm = this;
+                ((o_browser)Owner).SettingsForm = this;
 
                 LoadSettings();
             }
@@ -135,72 +110,65 @@ namespace Lococo.Forms.overlay.UI.Bar
 
         private void URL_map_Click(object sender, EventArgs e)
         {
-            if (ParentForm == null || !ParentForm.IsHandleCreated)
-            {
+            if (!Program.IsActivated(Owner))
                 return;
-            }
 
-            ParentForm.URL = "https://lostark.inven.co.kr/dataninfo/world/?code=10201";
+            ((o_browser)Owner).URL = "https://lostark.inven.co.kr/dataninfo/world/?code=10201";
         }
 
         private void URL_bingpago_Click(object sender, EventArgs e)
         {
-            if (ParentForm == null || !ParentForm.IsHandleCreated)
-            {
+            if (!Program.IsActivated(Owner))
                 return;
-            }
 
-            ParentForm.URL = "https://ialy1595.me/kouku/";
+            ((o_browser)Owner).URL = "https://ialy1595.me/kouku/";
         }
 
         private void URL_youtube_Click(object sender, EventArgs e)
         {
-            if (ParentForm == null || !ParentForm.IsHandleCreated)
-            {
+            if (!Program.IsActivated(Owner))
                 return;
-            }
 
-            ParentForm.URL = "https://www.youtube.com";
+            ((o_browser)Owner).URL = "https://www.youtube.com";
         }
 
         private void URL_input_Click(object sender, EventArgs e)
         {
-            if (ParentForm == null || !ParentForm.IsHandleCreated)
-            {
-                return;
-            }
-
-            string input_url = Microsoft.VisualBasic.Interaction.InputBox("오버레이에 표시할 웹사이트의 URL이나 로컬 HTML파일의 경로를 입력하세요.\r\n\r\n(예시) 네이버라면 https://www.naver.com 입력", "브라우저 오버레이 링크 입력", null);
-
-            if (input_url.Length < 1)
+            if (!Program.IsActivated(Owner))
                 return;
 
-            if (!checkURLValid(input_url))
-            {
-                Program.ShowMsgbox("유효한 링크(URL)이 아닙니다.", "실패", false);
+            if (file_path.TextLength < 1)
                 return;
-            } 
-            
-            ParentForm.URL = input_url;
+
+            if (!File.Exists(file_path.Text))            
+                if (!file_path.Text.Contains("https://") && !file_path.Text.Contains("http://"))            
+                    file_path.Text = "https://" + file_path.Text;
+                   
+            ((o_browser)Owner).URL = file_path.Text;
         }
         #endregion
+
+        private void file_path_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+                URL_input_Click(URL_input, new EventArgs());
+           
+        }
+
+
 
 
         private bool changedByParent = false;
         private void zoom_ValueChanged(object sender, EventArgs e)
         {
-            if (ParentForm == null || !ParentForm.IsHandleCreated)
-            {
+            if (!Program.IsActivated(Owner))
                 return;
-            }
 
             zoom_value.Text = zoom.Value.ToString() + "%";
 
             if (!changedByParent)
-            {
-                ParentForm.zoom = (ushort)zoom.Value;
-            }
-        }
+                ((o_browser)Owner).zoom = (ushort)zoom.Value;
 
+        }
     }
 }
