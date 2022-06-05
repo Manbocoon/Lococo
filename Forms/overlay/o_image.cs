@@ -14,39 +14,16 @@ using System.Threading;
 
 namespace Lococo.Forms.overlay
 {
+    /// <summary>
+    /// 이미지 오버레이 창입니다.
+    /// </summary>
     public partial class o_image : Form
     {
-        #region Win32 API
+        #region Windows API
         [DllImport("user32")]
-        public static extern UInt16 GetAsyncKeyState(Int32 vKey);
-        #endregion
-
-        #region Native Methods and Structures
-
-        const Int32 WS_EX_LAYERED = 0x80000;
-        const Int32 HTCAPTION = 0x02;
-        const Int32 WM_NCHITTEST = 0x84;
-        const Int32 ULW_ALPHA = 0x02;
-        const byte AC_SRC_OVER = 0x00;
-        const byte AC_SRC_ALPHA = 0x01;
-
-        [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        struct ARGB
-        {
-            public byte Blue;
-            public byte Green;
-            public byte Red;
-            public byte Alpha;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        struct BLENDFUNCTION
-        {
-            public byte BlendOp;
-            public byte BlendFlags;
-            public byte SourceConstantAlpha;
-            public byte AlphaFormat;
-        }
+        public static extern Int32 SetWindowLong(IntPtr hWnd, Int32 nIndex, Int32 dwNewLong);
+        [DllImport("user32")]
+        public static extern Int32 GetWindowLong(IntPtr hWnd, Int32 nIndex);
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -74,17 +51,39 @@ namespace Lococo.Forms.overlay
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool DeleteObject(IntPtr hObject);
 
-        [DllImport("user32")]
-        public static extern Int32 SetWindowLong(IntPtr hWnd, Int32 nIndex, Int32 dwNewLong);
-        [DllImport("user32")]
-        public static extern Int32 GetWindowLong(IntPtr hWnd, Int32 nIndex);
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+        struct ARGB
+        {
+            public byte Blue;
+            public byte Green;
+            public byte Red;
+            public byte Alpha;
+        }
+
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+        struct BLENDFUNCTION
+        {
+            public byte BlendOp;
+            public byte BlendFlags;
+            public byte SourceConstantAlpha;
+            public byte AlphaFormat;
+        }
+
+        private const Int32 WS_EX_LAYERED = 0x80000;
+        private const Int32 HTCAPTION = 0x02;
+        private const Int32 WM_NCHITTEST = 0x84;
+        private const Int32 ULW_ALPHA = 0x02;
+        private const byte AC_SRC_OVER = 0x00;
+        private const byte AC_SRC_ALPHA = 0x01;
         #endregion
 
 
         #region Global Variables
         public o_image_sizer SizerForm { get; set; }
+        public UI.Bar.mainUI ChildBar { get; set; }
+        public UI.Bar.s_image SettingsForm { get; set; }
+        public UI.Bar.slider SliderForm { get; set; }
 
-        private int originalStyle;
         private bool clickable_value = true;
         public bool clickable
         {
@@ -97,7 +96,7 @@ namespace Lococo.Forms.overlay
             {
                 clickable_value = value;
 
-                if (!IsHandleCreated)
+                if (!SizerForm.IsHandleCreated)
                 {
                     return;
                 }
@@ -105,31 +104,31 @@ namespace Lococo.Forms.overlay
 
                 if (value)
                 {
-                    SetWindowLong(Handle, -20, originalStyle);
+                    SetWindowLong(SizerForm.Handle, -20, SizerForm.originalStyle);
 
-                    Invoke((MethodInvoker)delegate
+                    SizerForm.Invoke((MethodInvoker)delegate
                     {
                         using (var shadowClass = new Functions.UI.dropShadow())
                         {
-                            shadowClass.ApplyShadows(this, 1, 1, 1, 1);
+                            shadowClass.ApplyShadows(SizerForm, 1, 1, 1, 1);
                         }
                     });
                 }
 
                 else
                 {
-                    SetWindowLong(Handle, -20, originalStyle | 0x80000 | 0x20);
+                    SetWindowLong(SizerForm.Handle, -20, SizerForm.originalStyle | 0x80000 | 0x20);
 
-                    Invoke((MethodInvoker)delegate
+                    SizerForm.Invoke((MethodInvoker)delegate
                     {
                         using (var shadowClass = new Functions.UI.dropShadow())
                         {
-                            shadowClass.ApplyShadows(this, 0, 0, 0, 0);
+                            shadowClass.ApplyShadows(SizerForm, 0, 0, 0, 0);
                         }
                     });
                 }
 
-                Invalidate();
+                SizerForm.Invalidate();
             }
         }
 
@@ -149,24 +148,6 @@ namespace Lococo.Forms.overlay
                 {
                     updateOpacity();
                 }
-            }
-        }
-
-        private Rectangle bounds_value;
-        public Rectangle bounds
-        {
-            get
-            {
-                return bounds_value;
-            }
-
-            set
-            {
-                bounds_value = value;
-
-                Location = value.Location;
-
-                updateImage(imgPath, opacity, value.Width, value.Height);
             }
         }
 
@@ -207,27 +188,34 @@ namespace Lococo.Forms.overlay
         }
 
         public bool useOriginalSize { get; set; }
+
+        public bool keepRatio { get; set; }
         #endregion
 
         #region Private Variables
-        private Bitmap target_img;
-
-        private readonly string appPath = Application.StartupPath;
+        public Bitmap target_img;
         #endregion
 
 
         
         public void DisposeChilds()
         {
+            if (target_img != null)
+                target_img.Dispose();
 
+            if (Program.IsActivated(ChildBar))           
+                ChildBar.Dispose();
+            
+            if (Program.IsActivated(SettingsForm))
+                SettingsForm.Dispose();
+            
+            if (Program.IsActivated(SliderForm))    
+                SliderForm.Dispose();
+            
             if (Program.IsActivated(SizerForm))
-            {
-                SizerForm.DisposeChilds();
-
-                SizerForm.Dispose();
-                SizerForm.Close();
-            }
+                SizerForm.Dispose();        
         }
+
 
         public o_image()
         {
@@ -236,43 +224,43 @@ namespace Lococo.Forms.overlay
             Load += PerPixelAlphaForm_Load;
         }
 
-        private void LoadSettings()
-        {
-            using (var config = new Config.image())
-            {
-                config.LoadSettings();
-
-                imgPath = config.globalSettings.imgPath;
-                opacity = config.globalSettings.opacity;
-                bounds = config.globalSettings.bounds;
-
-                useOriginalSize = config.globalSettings.useOriginalSize;
-            }
-        }
-
         public void SaveSettings()
         {
-            using (var config = new Config.image())
+            using (var config = new Config.overlay())
             {
-                config.ParentForm = this;
-                config.SizerForm = this.SizerForm;
+                config.Owner = this;
 
                 config.SaveSettings();
             }
         }
 
+
+
         void PerPixelAlphaForm_Load(object sender, EventArgs e)
         {
             TopMost = true;
-            originalStyle = GetWindowLong(Handle, -20);
-            clickable = false;
 
-            LoadSettings();
+            // 포개진 Sizer 폼이 클릭 가능하므로 클릭 불가능하도록 고정
+            int myOriginalStyle = GetWindowLong(Handle, -20);
+            SetWindowLong(Handle, -20, myOriginalStyle | 0x80000 | 0x20);
 
+            // 이미지 위를 포개서 보여줄 크기조절 폼
             SizerForm = new o_image_sizer();
+            SizerForm.Show(this);
+
+            // 설정 불러오기
+            using (var config = new Config.overlay())
+            {
+                config.Owner = this;
+
+                config.ReadSettings();
+                config.ApplySettings();
+            }
             SizerForm.Bounds = Bounds;
-            SizerForm.ParentForm = this;
-            SizerForm.Show();
+
+            updateImage(imgPath, opacity, Width, Height);
+
+            _public.ShowChildBar(this);
         }
 
         protected override CreateParams CreateParams
@@ -317,7 +305,6 @@ namespace Lococo.Forms.overlay
 
         public void SelectBitmap(Bitmap bitmap, int opacity)
         {
-
             if (bitmap.PixelFormat != PixelFormat.Format32bppArgb)
             {
                 throw new ApplicationException("알파 채널을 지닌 32비트 ARGB 포맷의 PNG 파일이어야 합니다.");
@@ -374,7 +361,7 @@ namespace Lococo.Forms.overlay
 
 
 
-        private void SaveResizedImage(string original_filePath, int new_width, int new_height)
+        public Bitmap SaveResizedImage(string original_filePath, int new_width, int new_height)
         {
             Image image = Image.FromFile(original_filePath, true);
             int original_width = image.Width, original_height = image.Height;
@@ -382,15 +369,11 @@ namespace Lococo.Forms.overlay
             if ((useOriginalSize && !SizerForm.ResizedByUser) 
                 || (original_width == new_width && original_height == new_height))
             {
-                image.Save(appPath + @"\db\lococo_target_image.png", ImageFormat.Png);
-                File.SetAttributes(appPath + @"\db\lococo_target_image.png", FileAttributes.Hidden);
-
-                image.Dispose();
-                return;
+                return (Bitmap)image;
             }
 
-            Image thumbnail = new Bitmap(new_width, new_height, PixelFormat.Format32bppArgb);
-            Graphics graphic = Graphics.FromImage(thumbnail);
+            Image resized_image = new Bitmap(new_width, new_height, PixelFormat.Format32bppArgb);
+            Graphics graphic = Graphics.FromImage(resized_image);
 
             graphic.InterpolationMode = InterpolationMode.HighQualityBicubic;
             graphic.SmoothingMode = SmoothingMode.HighQuality;
@@ -403,49 +386,40 @@ namespace Lococo.Forms.overlay
             // use whichever multiplier is smaller
             double ratio = ratioX < ratioY ? ratioX : ratioY;
 
-            int newHeight = Convert.ToInt32(original_height * ratio);
-            int newWidth = Convert.ToInt32(original_width * ratio);
+            int newHeight = (int)(original_height * ratio);
+            int newWidth = (int)(original_width * ratio);
 
-            int posX = Convert.ToInt32((new_width - (original_width * ratio)) / 2);
-            int posY = Convert.ToInt32((new_height - (original_height * ratio)) / 2);
+            int posX = (int)((new_width - (original_width * ratio)) / 2);
+            int posY = (int)((new_height - (original_height * ratio)) / 2);
 
             graphic.Clear(Color.Transparent); // padding
             graphic.DrawImage(image, posX, posY, newWidth, newHeight);
 
-
-            if (File.Exists(appPath + @"\db\lococo_target_image.png"))
-            {
-                try { File.Delete(appPath + @"\db\lococo_target_image.png"); }
-
-                catch (Exception) { }
-            }
-
-            thumbnail.Save(appPath + @"\db\lococo_target_image.png", ImageFormat.Png);
-            File.SetAttributes(appPath + @"\db\lococo_target_image.png", FileAttributes.Hidden);
-
-            thumbnail.Dispose();
             image.Dispose();
+            return (Bitmap)resized_image;
         }
 
         public void updateImage(string img_path, byte opacity, int new_width, int new_height)
         {
-            if (!Imaging.IsSupportedImage(img_path)
-                || img_path == Program.Path + "\\db\\lococo_target_image.png")
+            if (!Imaging.IsSupportedImage(img_path))
             {
+                target_img = new Bitmap(Properties.Resources.no_image);
                 SelectBitmap(Properties.Resources.no_image, 255);
+
+                SizerForm.Size = target_img.Size;
+
+                return;
             }
 
-            else
+            if (target_img == null)            
+                target_img = new Bitmap(1, 1);
+            
+            if (target_img.Width != new_width || target_img.Height != new_height)
             {
-                if (target_img != null)
-                    target_img.Dispose();
-                
-                SaveResizedImage(img_path, new_width, new_height);
-
-                target_img = new Bitmap(appPath + @"\db\lococo_target_image.png");
-                SelectBitmap(target_img, (int)(255 * (float)opacity / 100));
                 target_img.Dispose();
 
+                target_img = SaveResizedImage(img_path, new_width, new_height);
+                SelectBitmap(target_img, (int)(255 * (float)opacity / 100));
             }
 
             // Form(이미지)의 Width/Height 값을 정상적으로 받아오려면 폼을 1회 움직여야함
@@ -461,19 +435,14 @@ namespace Lococo.Forms.overlay
                 SizerForm.Size = Size;
                 SizerForm.ResizedByParent = false;
             }
+
+            GC.Collect(0);
         }
 
         private void updateOpacity()
         {
             if (target_img != null)
-                target_img.Dispose();
-
-            if (File.Exists(Program.Path + @"\db\lococo_target_image.png"))
-            {
-                target_img = new Bitmap(Program.Path + @"\db\lococo_target_image.png");
                 SelectBitmap(target_img, (int)(255 * (float)opacity / 100));
-                target_img.Dispose();
-            }
         }
         #endregion
 
