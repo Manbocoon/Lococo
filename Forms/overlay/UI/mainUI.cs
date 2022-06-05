@@ -26,29 +26,6 @@ namespace Lococo.Forms.overlay
 
         public bool relying { get; set; } = true;
 
-        public byte opacity
-        {
-            get
-            {
-                return (byte)(Opacity * 100);
-            }
-
-            set
-            {
-                Opacity = (float)value / 100;
-
-                if (Program.IsActivated(overlayForm_browser))
-                {
-                    overlayForm_browser.opacityUI = opacity;
-                }
-
-                if (Program.IsActivated(overlayForm_image))
-                {
-                    overlayForm_image.SizerForm.opacityUI = opacity;
-                }
-            }
-        }
-
         #endregion
 
 
@@ -98,9 +75,9 @@ namespace Lococo.Forms.overlay
                     overlayForm_browser.ChildBar.Opacity = opacity_valueF;
                 }
 
-                if (Program.IsActivated(overlayForm_browser.ChildForm))
+                if (Program.IsActivated(overlayForm_browser.SettingsForm))
                 {
-                    overlayForm_browser.ChildForm.Opacity = opacity_valueF;
+                    overlayForm_browser.SettingsForm.Opacity = opacity_valueF;
                 }
 
                 if (Program.IsActivated(overlayForm_browser.SliderForm))
@@ -133,7 +110,7 @@ namespace Lococo.Forms.overlay
 
                 if (Program.IsActivated(overlayForm_image.SizerForm))
                 {
-                    overlayForm_image.SizerForm.visible = visible_value;
+                    overlayForm_image.visible = visible_value;
                 }
             }
 
@@ -157,50 +134,32 @@ namespace Lococo.Forms.overlay
         public Thread _watcherThread;
         private void overlayForm_Load(object sender, EventArgs e)
         {
-            //this.BackColor = Color.Wheat;
             this.TransparencyKey = Color.Wheat;
             this.TopMost = true;
 
             this.WindowState = FormWindowState.Normal;
 
-            using (var shadowClass = new Functions.UI.dropShadow())
-            {
-                shadowClass.ApplyShadows(this, 5, 5, 5, 5);
-            }
-
             Game.ScreenOption screen_option = Game.GetScreenOption();
-            if (screen_option.Read_Success)
-            {
-                if (screen_option.FullScreen)
-                {
-                    Program.ShowMsgbox("로스트아크의 화면 설정이 \"전체 화면\"으로 설정되어 있습니다.\r\n\r\n오버레이는 \"전체 화면\"에서 작동하지 않으니, \"전체 창 모드\"로 사용하시길 권장합니다.", "알림");
-                }
-            }
-
+            if (screen_option.Read_Success && screen_option.FullScreen)          
+                Program.ShowMsgbox("로스트아크의 화면 설정이 \"전체 화면\"으로 설정되어 있습니다.\r\n\r\n오버레이는 \"전체 화면\"에서 작동하지 않으니, \"전체 창 모드\"로 사용하시길 권장합니다.", "알림");
+                
             _watcherThread = new Thread(() =>
            {
                while (true)
-               {
-                   if (!Program.IsActivated(this))
-                   {
-                       return;
-                   }
+               {               
+                   if (!Program.IsActivated(this))          
+                       return;  
 
                    bool visible_value = false;
 
                    if (relying)
                    {
                        if (Game.IsRunning())
-                       {
                            visible_value = true;
-                       }
-
                    }
 
-                   else
-                   {
-                       visible_value = true;
-                   }
+                   else                   
+                       visible_value = true;                 
 
                    SetOverlayVisible(visible_value);
 
@@ -218,30 +177,24 @@ namespace Lococo.Forms.overlay
         #region Event Handlers - Buttons For Overlay
         private readonly Color Button_DefaultBackColor = Color.FromArgb(22, 22, 22);
         private readonly Color Button_ActivatedBackColor = Color.FromArgb(75, 75, 75);
-        public o_browser overlayForm_browser;
-        public o_image overlayForm_image;
-        public o_text overlayForm_text;
+        public o_browser overlayForm_browser { get; set; }
+        public o_image overlayForm_image { get; set; }
+        public o_text overlayForm_text { get; set; }
 
         public bool IsButtonActivated(Button button, bool change_state)
         {
             bool result = false;
 
             if (button.BackColor.R > Button_DefaultBackColor.R)
-            {
                 result = true;
-            }
 
             if (change_state)
             {
                 if (result)
-                {
                     button.BackColor = Button_DefaultBackColor;
-                }
 
-                else
-                {
-                    button.BackColor = Button_ActivatedBackColor;
-                }
+                else               
+                    button.BackColor = Button_ActivatedBackColor;             
             }
 
             return result;
@@ -258,14 +211,10 @@ namespace Lococo.Forms.overlay
         {
             bool activated = false;
             if (thisButton.BackColor.R > 22)
-            {
                 activated = true;
-            }
 
             else
-            {
                 activated = false; 
-            }
 
 
 
@@ -277,8 +226,8 @@ namespace Lococo.Forms.overlay
                     if (activated)
                     {
                         overlayForm_browser = new o_browser();
-                        overlayForm_browser.Show();
-                        overlayForm_browser.opacityUI = opacity;
+                        overlayForm_browser.Show(this);
+
                     }
 
                     else
@@ -289,7 +238,6 @@ namespace Lococo.Forms.overlay
 
                             overlayForm_browser.DisposeChilds();
                             overlayForm_browser.Dispose();
-                            overlayForm_browser.Close();
 
                             GC.Collect();
                         }
@@ -303,8 +251,8 @@ namespace Lococo.Forms.overlay
                     if (activated)
                     {
                         overlayForm_image = new o_image();
-                        overlayForm_image.Show();
-                        overlayForm_image.SizerForm.opacityUI = opacity;
+                        overlayForm_image.Show(this);
+
                     }
 
                     else
@@ -315,7 +263,6 @@ namespace Lococo.Forms.overlay
 
                             overlayForm_image.DisposeChilds();
                             overlayForm_image.Dispose();
-                            overlayForm_image.Close();
 
                             GC.Collect();
                         }
