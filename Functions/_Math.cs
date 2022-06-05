@@ -10,7 +10,12 @@ namespace Lococo
 {
     static class _Math
     {
-        // 최대공약수 반환
+        /// <summary>
+        /// 어떤 두 수의 최대공약수를 구하는 함수입니다.
+        /// </summary>
+        /// <param name="x">첫번째 수입니다.</param>
+        /// <param name="y">두번째 수입니다.</param>
+        /// <returns></returns>
         public static int GetGCD(int x, int y)
         {
             int gcd = 1;
@@ -29,7 +34,9 @@ namespace Lococo
         }
 
 
-        // 실수인지 정수인지 반환
+        /// <summary>
+        /// 어떤 숫자가 정수인지, 실수인지 확인합니다.
+        /// </summary>
         public static bool IsInteger(double number)
         {
             bool result = false;
