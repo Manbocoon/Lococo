@@ -16,6 +16,9 @@ using System.Media;
 
 namespace Lococo.Forms
 {
+    /// <summary>
+    /// 윈도우 기본 메세지박스가 어울리지 않아 만든 커스텀 메세지박스입니다. Program.ShowMsgBox() 함수를 통해 사용 가능합니다.
+    /// </summary>
     public partial class messageForm : Form
     {
         #region API
