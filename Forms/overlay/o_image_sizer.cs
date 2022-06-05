@@ -20,6 +20,9 @@ using System.Security;
 
 namespace Lococo.Forms.overlay
 {
+    /// <summary>
+    /// 이미지 오버레이의 크기조절 편의성 향상을 위해 꼼수로 만든 창입니다. 이미지 창 위에 포개 올리고 항상 같은 크기를 유지하도록 합니다. 이 창의 이벤트 처리에 따라 이미지를 재구성합니다.
+    /// </summary>
     public partial class o_image_sizer : Form
     {
         #region Windows API
@@ -32,135 +35,12 @@ namespace Lococo.Forms.overlay
 
 
         #region Global Variables
-        public o_image ParentForm { get; set; }
-        public UI.Bar.mainUI ChildBar { get; set; }
-        public UI.Bar.s_image ChildForm { get; set; }
-        public UI.Bar.slider SliderForm { get; set; }
+        public o_image owner { get; set; }
 
-        private int originalStyle;
-        private bool clickable_value = true;
-        public bool clickable
-        {
-            get
-            {
-                return clickable_value;
-            }
-
-            set
-            {
-                clickable_value = value;
-
-                if (!this.IsHandleCreated)
-                {
-                    return;
-                }
-
-
-                if (value)
-                {
-                    SetWindowLong(this.Handle, -20, originalStyle);
-
-                    this.Invoke((MethodInvoker)delegate
-                    {
-                        using (var shadowClass = new Functions.UI.dropShadow())
-                        {
-                            shadowClass.ApplyShadows(this, 1, 1, 1, 1);
-                        }
-                    });
-                }
-
-                else
-                {
-                    SetWindowLong(this.Handle, -20, originalStyle | 0x80000 | 0x20);
-
-                    this.Invoke((MethodInvoker)delegate
-                    {
-                        using (var shadowClass = new Functions.UI.dropShadow())
-                        {
-                            shadowClass.ApplyShadows(this, 0, 0, 0, 0);
-                        }
-                    });
-                }
-
-                Invalidate();
-            }
-        }
-
-        private byte opacityUI_value = 80;
-        public byte opacityUI
-        {
-            get
-            {
-                return opacityUI_value;
-            }
-
-            set
-            {
-                opacityUI_value = value;
-
-                if (Program.IsActivated(ChildBar))
-                {
-                    ChildBar.opacityUI = value;
-                }
-
-                if (Program.IsActivated(ChildForm))
-                {
-                    ChildForm.opacityUI = value;
-                }
-
-                if (Program.IsActivated(SliderForm))
-                {
-                    SliderForm.opacityUI = value;
-                }
-            }
-        }
-
-        private bool visible_value = true;
-        public bool visible
-        {
-            get => visible_value;
-
-            set
-            {
-                visible_value = value;
-
-                if (IsHandleCreated)
-                {
-                    Invoke((MethodInvoker)delegate
-                    {
-                        Visible = value;
-                    });
-                }
-            }
-        }
-
-        public bool keepRatio { get; set; }
-
-        private readonly string appPath = Application.StartupPath;
+        public int originalStyle { get; set; }
         #endregion
 
 
-
-        public void DisposeChilds()
-        {
-            if (ChildBar != null && ChildBar.IsHandleCreated)
-            {
-                ChildBar.Dispose();
-                ChildBar.Close();
-            }
-
-            if (ChildForm != null && ChildForm.IsHandleCreated)
-            {
-                ChildForm.Dispose();
-                ChildForm.Close();
-            }
-
-            if (SliderForm != null && SliderForm.IsHandleCreated)
-            {
-                SliderForm.Dispose();
-                SliderForm.Close();
-            }
-        }
 
         public o_image_sizer()
         {
@@ -229,62 +109,29 @@ namespace Lococo.Forms.overlay
         #endregion
 
 
-        public void SetUIOpacity(byte value)
-        {
-            float valueF = (float)value / 100;
-
-            if (Program.IsActivated(ChildBar))
-            {
-                ChildBar.Opacity = valueF;
-            }
-        }
 
 
-        private void ShowChildBar()
-        {
-            ChildBar = new UI.Bar.mainUI();
-            ChildBar.ParentForm = this;
-            ChildBar.Location = new Point(this.Left, this.Top - ChildBar.Height);
-            ChildBar.Show();
-        }
-
-        private void RelocateChildForms()
-        {
-            if (Program.IsActivated(ChildBar))
-            {
-                ChildBar.Location = new Point(this.Left, this.Top - ChildBar.Height);
-            }
-
-            if (Program.IsActivated(ChildForm))
-            {
-                ChildForm.Location = new Point(this.Right + 5, this.Top);
-            }
-
-            if (Program.IsActivated(SliderForm))
-            {
-                SliderForm.Location = new Point(ChildBar.Right + 5, ChildBar.Top);
-            }
-        }
 
         public void ResizeImage()
         {
-            if (Program.IsActivated(ParentForm))
+            if (Program.IsActivated(owner))
             {
-                ParentForm.bounds = this.Bounds;
-
-                GC.Collect(0);
+                owner.Location = this.Location;
+                owner.updateImage(owner.imgPath, owner.opacity, Width, Height);
             }
 
         }
 
+        /// <summary>
+        /// 이미지 오버레이에 표시된 이미지와 거의 동일한 비율로 폼 크기를 수정합니다.
+        /// </summary>
+        /// <param name="forced">실제로 유저가 크기를 조절하지 않았더라도 강제로 수정합니다.</param>
         public void CorrectFormRatio(bool forced)
         {
-            if (!Program.IsActivated(ParentForm))
-            {
+            if (!Program.IsActivated(owner) || !File.Exists(owner.imgPath))            
                 return;
-            }
 
-            Point original_ratio = Imaging.GetImageRatio(Imaging.GetImageSize(ParentForm.imgPath));
+            Point original_ratio = Imaging.GetImageRatio(Imaging.GetImageSize(owner.imgPath));
 
             float ratio_width = (float)original_ratio.X / original_ratio.Y;
             float ratio_height = (float)original_ratio.Y / original_ratio.X;
@@ -292,52 +139,38 @@ namespace Lococo.Forms.overlay
             int new_width = (int)(Height * ratio_width);
             int new_height = (int)(Width * ratio_height);
 
-            if (width_delta > 0 && height_delta == 0)
+            if (forced)
             {
                 Height = new_height;
+                return;
             }
 
-            else if (height_delta > 0 && width_delta == 0)
-            {
-                Width = new_width;
-            }
+            if (width_delta > 0 && height_delta == 0)          
+                Height = new_height;
+            
+            else if (height_delta > 0 && width_delta == 0)           
+                Width = new_width;        
 
             // 가로와 세로 넓이가 모두 변한 경우에는, 더 변화량이 큰 축을 기준으로 변경
             else if (width_delta > 0 && height_delta > 0)
             {
-                if (width_delta >= height_delta)
-                {
+                if (width_delta >= height_delta)              
                     Height = new_height;
-                }
-
-                else
-                {
+                
+                else               
                     Width = new_width;
-                }
             }
 
-            // 강제로 비율 수정
-            else if (forced)
-            {
-                Height = new_height;
-            }
         }
 
+        /// <summary>
+        /// 이미지 오버레이에 표시된 이미지와 거의 동일한 비율로 폼 크기를 수정합니다.
+        /// </summary>
         public void CorrectFormRatio()
         {
             CorrectFormRatio(false);
         }
 
-        private void LoadSettings()
-        {
-            using (var config = new Config.image())
-            {
-                config.LoadSettings();
-
-                clickable = config.globalSettings.clickable;
-                keepRatio = config.globalSettings.keepRatio;
-            }
-        }
 
         #region Event Handlers - Form
         private void overlayForm_Load(object sender, EventArgs e)
@@ -350,24 +183,18 @@ namespace Lococo.Forms.overlay
 
             this.WindowState = FormWindowState.Normal;     
          
-            using (var shadowClass = new Functions.UI.dropShadow())
-            {
+            using (var shadowClass = new Functions.UI.dropShadow())           
                 shadowClass.ApplyShadows(this, 1, 1, 1, 1);
-            }
 
-            LoadSettings();
-
-            ShowChildBar();
+            owner = (o_image)Owner;
         }
 
         private void image_sizer_Move(object sender, EventArgs e)
         {
-            if (Program.IsActivated(ParentForm))
-            {
-                ParentForm.Location = this.Location;
-            }
-
-            RelocateChildForms();
+            if (Program.IsActivated(owner))
+                owner.Location = this.Location;
+            
+            _public.PlaceChilds(owner);
         }
 
         // CPU, 메모리 부하를 줄이기 위해 크기 조절이 끝난 이후에만 이미지 조정
@@ -383,36 +210,35 @@ namespace Lococo.Forms.overlay
         public bool ResizedByParent = false, ResizedByUser = false;
         protected override void OnResizeEnd(EventArgs e)
         {
-            if (ResizedByParent)
-            {
-                return;
-            }
+            if (ResizedByParent)           
+                return;           
 
-            if (Size == _previousFormSize)
-            { 
+            if (Size == _previousFormSize)          
                 return;
-            }
 
             width_delta = Math.Abs(Width - _previousFormSize.Width);
             height_delta = Math.Abs(Height - _previousFormSize.Height);
 
-            _previousFormSize = Size;
-
-            if (keepRatio)
-            {
-                CorrectFormRatio();
-            }
+            if (owner.keepRatio)          
+                CorrectFormRatio(); 
 
             ResizedByUser = true;
             ResizeImage();
             ResizedByUser = false;
+
+            width_delta = 0;
+            height_delta = 0;
+
+            _public.PlaceChilds(owner);
+
+            _previousFormSize = Size;
 
             base.OnResizeEnd(e);
         }
 
         private void o_image_sizer_Resize(object sender, EventArgs e)
         {
-            RelocateChildForms();
+            _public.PlaceChilds(owner);
         }
 
         #endregion
