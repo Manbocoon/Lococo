@@ -12,6 +12,9 @@ using System.Windows.Forms;
 
 namespace Lococo.Functions
 {
+    /// <summary>
+    /// Lococo 프로그램의 업데이트를 관리하는 객체입니다.
+    /// </summary>
     class Updater : IDisposable
     {
         public readonly string Release_Url = "https://github.com/bumju08/Lococo/releases";
@@ -22,6 +25,9 @@ namespace Lococo.Functions
 
         }
 
+        /// <summary>
+        /// 웹으로부터 얻은 최신버전의 정보를 저장할 구조체입니다.
+        /// </summary>
         public struct AppINFO
         {
             public string Name;
@@ -54,7 +60,9 @@ namespace Lococo.Functions
         }
 
 
-
+        /// <summary>
+        /// 웹으로부터 최신버전에 대한 정보를 불러옵니다.
+        /// </summary>
         public AppINFO GetRecentInfo()
         {
             AppINFO AppInfo = new AppINFO();
