@@ -29,7 +29,6 @@ namespace Lococo.Forms.overlay.UI.Bar
         /// </summary>
         private void InitializeComponent()
         {
-            this.zoom = new Lococo.Functions.UI.Slider();
             this.label_zoom = new System.Windows.Forms.Label();
             this.URL_input = new System.Windows.Forms.Button();
             this.URL_youtube = new System.Windows.Forms.Button();
@@ -40,23 +39,9 @@ namespace Lococo.Forms.overlay.UI.Bar
             this.line_2 = new System.Windows.Forms.Label();
             this.zoom_value = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.file_path = new System.Windows.Forms.TextBox();
+            this.zoom = new Lococo.Functions.UI.Slider();
             this.SuspendLayout();
-            // 
-            // zoom
-            // 
-            this.zoom.BarBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
-            this.zoom.BarForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
-            this.zoom.BoxColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
-            this.zoom.Location = new System.Drawing.Point(83, 246);
-            this.zoom.Max = 300;
-            this.zoom.Min = 25;
-            this.zoom.Name = "zoom";
-            this.zoom.Size = new System.Drawing.Size(400, 25);
-            this.zoom.SmallestChange = 1;
-            this.zoom.TabIndex = 68;
-            this.zoom.UseBox = true;
-            this.zoom.Value = 100;
-            this.zoom.ValueChanged += new System.EventHandler(this.zoom_ValueChanged);
             // 
             // label_zoom
             // 
@@ -64,7 +49,7 @@ namespace Lococo.Forms.overlay.UI.Bar
             this.label_zoom.Cursor = System.Windows.Forms.Cursors.Default;
             this.label_zoom.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label_zoom.ForeColor = System.Drawing.Color.White;
-            this.label_zoom.Location = new System.Drawing.Point(15, 247);
+            this.label_zoom.Location = new System.Drawing.Point(15, 292);
             this.label_zoom.Name = "label_zoom";
             this.label_zoom.Size = new System.Drawing.Size(95, 35);
             this.label_zoom.TabIndex = 67;
@@ -79,11 +64,11 @@ namespace Lococo.Forms.overlay.UI.Bar
             this.URL_input.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.URL_input.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.URL_input.ForeColor = System.Drawing.Color.LightGray;
-            this.URL_input.Location = new System.Drawing.Point(399, 130);
+            this.URL_input.Location = new System.Drawing.Point(472, 179);
             this.URL_input.Name = "URL_input";
-            this.URL_input.Size = new System.Drawing.Size(90, 40);
+            this.URL_input.Size = new System.Drawing.Size(76, 40);
             this.URL_input.TabIndex = 65;
-            this.URL_input.Text = "직접 입력";
+            this.URL_input.Text = "이동";
             this.URL_input.UseVisualStyleBackColor = true;
             this.URL_input.Click += new System.EventHandler(this.URL_input_Click);
             // 
@@ -169,7 +154,7 @@ namespace Lococo.Forms.overlay.UI.Bar
             this.line_2.BackColor = System.Drawing.Color.Transparent;
             this.line_2.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.line_2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.line_2.Location = new System.Drawing.Point(17, 200);
+            this.line_2.Location = new System.Drawing.Point(17, 245);
             this.line_2.Name = "line_2";
             this.line_2.Size = new System.Drawing.Size(543, 17);
             this.line_2.TabIndex = 59;
@@ -182,7 +167,7 @@ namespace Lococo.Forms.overlay.UI.Bar
             this.zoom_value.BackColor = System.Drawing.Color.Transparent;
             this.zoom_value.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.zoom_value.ForeColor = System.Drawing.Color.LightGray;
-            this.zoom_value.Location = new System.Drawing.Point(497, 247);
+            this.zoom_value.Location = new System.Drawing.Point(497, 292);
             this.zoom_value.Name = "zoom_value";
             this.zoom_value.Size = new System.Drawing.Size(51, 21);
             this.zoom_value.TabIndex = 58;
@@ -194,18 +179,47 @@ namespace Lococo.Forms.overlay.UI.Bar
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label1.ForeColor = System.Drawing.Color.DarkGray;
-            this.label1.Location = new System.Drawing.Point(17, 289);
+            this.label1.Location = new System.Drawing.Point(17, 334);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(400, 34);
             this.label1.TabIndex = 69;
             this.label1.Text = "브라우저의 화면 배율을 변경합니다.\r\n브라우저에 Ctrl + 마우스 휠↑↓, Ctrl +, Ctrl - 를 입력해도 됩니다.";
+            // 
+            // file_path
+            // 
+            this.file_path.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.file_path.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.file_path.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.file_path.ForeColor = System.Drawing.Color.LightGray;
+            this.file_path.Location = new System.Drawing.Point(20, 187);
+            this.file_path.Name = "file_path";
+            this.file_path.Size = new System.Drawing.Size(432, 25);
+            this.file_path.TabIndex = 73;
+            this.file_path.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.file_path_KeyPress);
+            // 
+            // zoom
+            // 
+            this.zoom.BarBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
+            this.zoom.BarForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
+            this.zoom.BoxColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
+            this.zoom.Location = new System.Drawing.Point(83, 291);
+            this.zoom.Max = 300;
+            this.zoom.Min = 25;
+            this.zoom.Name = "zoom";
+            this.zoom.Size = new System.Drawing.Size(400, 25);
+            this.zoom.SmallestChange = 1;
+            this.zoom.TabIndex = 68;
+            this.zoom.UseBox = true;
+            this.zoom.Value = 100;
+            this.zoom.ValueChanged += new System.EventHandler(this.zoom_ValueChanged);
             // 
             // s_browser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.ClientSize = new System.Drawing.Size(571, 350);
+            this.ClientSize = new System.Drawing.Size(571, 391);
+            this.Controls.Add(this.file_path);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.zoom);
             this.Controls.Add(this.label_zoom);
@@ -245,5 +259,6 @@ namespace Lococo.Forms.overlay.UI.Bar
         private System.Windows.Forms.Label line_2;
         private System.Windows.Forms.Label zoom_value;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox file_path;
     }
 }
