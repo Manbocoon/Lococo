@@ -96,6 +96,7 @@ namespace Lococo.Forms.overlay.UI.Bar
             // favoritesButton
             // 
             this.favoritesButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(22)))));
+            this.favoritesButton.ContextMenuStrip = this.fav_menu;
             this.favoritesButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.favoritesButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
             this.favoritesButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -121,16 +122,16 @@ namespace Lococo.Forms.overlay.UI.Bar
             this.fav_del,
             this.fav_divLine});
             this.fav_menu.Name = "fav_menu";
-            this.fav_menu.ShowCheckMargin = true;
-            this.fav_menu.ShowImageMargin = false;
-            this.fav_menu.Size = new System.Drawing.Size(192, 114);
+            this.fav_menu.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+            this.fav_menu.Size = new System.Drawing.Size(192, 92);
+            this.fav_menu.Click += new System.EventHandler(this.fav_menu_Click);
             // 
             // fav_add
             // 
             this.fav_add.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.fav_add.Name = "fav_add";
             this.fav_add.Size = new System.Drawing.Size(191, 22);
-            this.fav_add.Text = "즐겨찾기 추가";
+            this.fav_add.Text = "추가";
             this.fav_add.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // fav_edit
@@ -138,14 +139,14 @@ namespace Lococo.Forms.overlay.UI.Bar
             this.fav_edit.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.fav_edit.Name = "fav_edit";
             this.fav_edit.Size = new System.Drawing.Size(191, 22);
-            this.fav_edit.Text = "즐겨찾기 수정";
+            this.fav_edit.Text = "수정";
             // 
             // fav_del
             // 
             this.fav_del.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.fav_del.Name = "fav_del";
             this.fav_del.Size = new System.Drawing.Size(191, 22);
-            this.fav_del.Text = "즐겨찾기 삭제";
+            this.fav_del.Text = "삭제";
             // 
             // fav_divLine
             // 
@@ -175,6 +176,7 @@ namespace Lococo.Forms.overlay.UI.Bar
             this.Text = "Lococo - Overlay";
             this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
             this.Load += new System.EventHandler(this.mainUI_Load);
+            this.Move += new System.EventHandler(this.mainUI_Move);
             this.fav_menu.ResumeLayout(false);
             this.ResumeLayout(false);
 
