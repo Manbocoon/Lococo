@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Lococo")]
 [assembly: AssemblyDescription("로스트아크 도우미")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("debugprov@naver.com")]
+[assembly: AssemblyCompany("Github: bumju08")]
 [assembly: AssemblyProduct("Lococo")]
-[assembly: AssemblyCopyright("debugprov@naver.com")]
+[assembly: AssemblyCopyright("Github: bumju08")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // 모든 값을 지정하거나 아래와 같이 '*'를 사용하여 빌드 번호 및 수정 번호를
 // 기본값으로 할 수 있습니다.
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2022.05.28.00")]
-[assembly: AssemblyFileVersion("2022.05.28.00")]
+[assembly: AssemblyVersion("2022.06.05.00")]
+[assembly: AssemblyFileVersion("2022.06.05.00")]
