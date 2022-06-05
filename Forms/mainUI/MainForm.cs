@@ -1,30 +1,20 @@
 ﻿using Lococo.Forms.menus;
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
-using System.Xml;
 using System.Threading;
-using System.Drawing.Imaging;
-using System.Drawing.Drawing2D;
-using System.Net;
-using System.Net.NetworkInformation;
-
-using Lococo.Functions.UI.ColorPicker;
 
 
 
 namespace Lococo.Forms.mainUI
 {
+    /// <summary>
+    /// Lococo 프로그램의 메인 UI 폼입니다.
+    /// </summary>
     public partial class MainForm : Form
     {
         #region Windows API
@@ -169,8 +159,6 @@ namespace Lococo.Forms.mainUI
                     });
 
                     CheckUpdateAndAsk();
-
-                    return;
                 }
 
 
@@ -228,6 +216,7 @@ namespace Lococo.Forms.mainUI
             menu_browser_Click(menu_overlay, new EventArgs());
 
             CheckUpdateAndAsk();
+
         }
 
 
@@ -336,8 +325,6 @@ namespace Lococo.Forms.mainUI
 
             if (Program.IsActivated(m_overlay.overlayUIForm))
             {
-                m_overlay.overlayUIForm._watcherThread.Abort();
-
                 if (Program.IsActivated(m_overlay.overlayUIForm.overlayForm_browser))
                 {
                     overlay.o_browser overlay_browser = m_overlay.overlayUIForm.overlayForm_browser;
