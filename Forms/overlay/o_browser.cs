@@ -1,25 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
 using System.IO;
 
-using Microsoft.Win32;
-using System.Security;
-
-
+using Microsoft.Web.WebView2.Core;
+using Microsoft.Web.WebView2.WinForms;
+using Microsoft.Web.WebView2.Wpf;
 
 
 
 namespace Lococo.Forms.overlay
 {
+
+    /// <summary>
+    /// 브라우저 오버레이 창입니다.
+    /// </summary>
     public partial class o_browser : Form
     {
         #region Windows API
@@ -54,7 +53,7 @@ namespace Lococo.Forms.overlay
         public Thread hotkeyThread;
 
         public UI.Bar.mainUI ChildBar { get; set; }
-        public UI.Bar.s_browser ChildForm { get; set; }
+        public UI.Bar.s_browser SettingsForm { get; set; }
         public UI.Bar.slider SliderForm { get; set; }
 
         private string URL_value = "https://lostark.inven.co.kr/dataninfo/world/?code=10201";
@@ -134,35 +133,6 @@ namespace Lococo.Forms.overlay
                 if (this.IsHandleCreated)
                 {
                     this.Opacity = (double)value / 100;
-                }
-            }
-        }
-
-        private byte opacityUI_value = 80;
-        public byte opacityUI
-        {
-            get
-            {
-                return opacity_value;
-            }
-
-            set
-            {
-                opacityUI_value = value;
-
-                if (Program.IsActivated(ChildBar))
-                {
-                    ChildBar.opacityUI = value;
-                }
-
-                if (Program.IsActivated(ChildForm))
-                {
-                    ChildForm.opacityUI = value;
-                }
-
-                if (Program.IsActivated(SliderForm))
-                {
-                    SliderForm.opacityUI = value;
                 }
             }
         }
@@ -247,34 +217,16 @@ namespace Lococo.Forms.overlay
 
         public void DisposeChilds()
         {
-            if (ChildBar != null && ChildBar.IsHandleCreated)
-            {
+            if (Program.IsActivated(ChildBar))         
                 ChildBar.Dispose();
-                ChildBar.Close();
-            }
-
-            if (ChildForm != null && ChildForm.IsHandleCreated)
-            {
-                ChildForm.Dispose();
-                ChildForm.Close();
-            }
-
-            if (SliderForm != null && SliderForm.IsHandleCreated)
-            {
+            
+            if (Program.IsActivated(SettingsForm))           
+                SettingsForm.Dispose();
+            
+            if (Program.IsActivated(SliderForm))
                 SliderForm.Dispose();
-                SliderForm.Close();
-            }
         }
 
-        public void SetUIOpacity(byte value)
-        {
-            float valueF = (float)value / 100;
-
-            if (Program.IsActivated(ChildBar))
-            {
-                ChildBar.Opacity = valueF;
-            }
-        }
 
 
         public o_browser()
@@ -367,7 +319,9 @@ namespace Lococo.Forms.overlay
         #endregion
 
 
-
+        /// <summary>
+        /// 키보드 방향키 <- -> 를 실시간으로 감지하고 로스트아크 인벤 지도의 현재 맵을 변경시키는 스레드에 사용될 함수입니다.
+        /// </summary>
         private void hotkeyFunc()
         {
             byte pressedKey = 0;
@@ -460,7 +414,7 @@ namespace Lococo.Forms.overlay
         {
             if (!File.Exists(appPath + @"\db\map_list.ini"))
             {
-                MessageBox.Show("모험의 서 단축키 기능(→ ←)이 작동하지 않을 수 있습니다.\r\n\r\n" + appPath + @"\db\map_list.ini" + " 파일이 발견되지 않았습니다.", "알림", 0, MessageBoxIcon.Exclamation);
+                Program.ShowMsgbox("모험의 서 맵 변경 단축키(→ ←)가 작동하지 않을 수 있습니다.\r\n\r\n프로그램을 재시작하면 해결됩니다.", "알림");
                 return;
             }
 
@@ -472,57 +426,20 @@ namespace Lococo.Forms.overlay
                 map_list.Add(map_codes[index]);
         }
 
-        private void LoadSettings()
-        {
-            using (var config = new Config.browser())
-            {
-                config.LoadSettings();
-
-                this.Bounds = config.globalSettings.bounds;
-                this.URL = config.globalSettings.URL;
-                this.clickable = config.globalSettings.clickable;
-                this.opacity = config.globalSettings.opacity;
-                this.zoom = config.globalSettings.zoom;
-            }
-        }
-
         public void SaveSettings()
         {
             hotkeyThread.Abort();
 
-            using (var config = new Config.browser())
+            using (var config = new Config.overlay())
             {
-                config.ParentForm = this;
+                config.Owner = this;
 
                 config.SaveSettings();
             }
         }
 
-        private void ShowChildBar()
-        {
-            ChildBar = new UI.Bar.mainUI();
-            ChildBar.ParentForm = this;
-            ChildBar.Location = new Point(this.Left, this.Top - ChildBar.Height);
-            ChildBar.Show();
-        }
 
-        private void RelocateChildForms()
-        {
-            if (ChildBar != null && ChildBar.IsHandleCreated)
-            {
-                ChildBar.Location = new Point(this.Left, this.Top - ChildBar.Height);
-            }
 
-            if (ChildForm != null && ChildForm.IsHandleCreated)
-            {
-                ChildForm.Location = new Point(this.Right + 5, this.Top);
-            }
-
-            if (SliderForm != null && SliderForm.IsHandleCreated)
-            {
-                SliderForm.Location = new Point(ChildBar.Right + 5, ChildBar.Top);
-            }
-        }
 
         private void overlayForm_Load(object sender, EventArgs e)
         {
@@ -545,30 +462,35 @@ namespace Lococo.Forms.overlay
 
             GetMapList();
 
-            LoadSettings();
+            // 설정 불러오기
+            using (var config = new Config.overlay())
+            {
+                config.Owner = this;
 
-            ShowChildBar();
+                config.ReadSettings();
+                config.ApplySettings();
+            }
 
-
+            _public.ShowChildBar(this);
 
             /* using (var IEClass = new Functions.changeIEVersion())
             {
                 if (!IEClass.IsBrowserEmulationSet())
                     IEClass.SetBrowserEmulationVersion();
-            } */
-           
+            } 
+            */
         }
 
         private void overlayForm_Resize(object sender, EventArgs e)
         {
             webViewer.Size = new Size(this.Width - 10, this.Height - 35);
 
-            RelocateChildForms();
+            _public.PlaceChilds(this);
         }
 
         private void overlayForm_Move(object sender, EventArgs e)
         {
-            RelocateChildForms();
+            _public.PlaceChilds(this);
         }
 
         private void overlayForm_Paint(object sender, PaintEventArgs e)
@@ -581,9 +503,9 @@ namespace Lococo.Forms.overlay
 
         private void webViewer_ZoomFactorChanged(object sender, EventArgs e)
         {
-            if (ChildForm != null && ChildForm.IsHandleCreated)
+            if (Program.IsActivated(SettingsForm))
             {
-                ChildForm.zoomValue = zoom;
+                SettingsForm.zoomValue = zoom;
             }
         }
     }
