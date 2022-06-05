@@ -12,6 +12,9 @@ using System.Xml;
 
 namespace Lococo
 {
+    /// <summary>
+    /// 게임과 관련된 함수들을 모아놓은 정적 객체입니다.
+    /// </summary>
     static class Game
     {
         #region Win32 API
@@ -36,7 +39,10 @@ namespace Lococo
         #endregion
 
 
-        // 프로세스의 실행파일 경로를 가져오는 함수
+        /// <summary>
+        /// 실행중인 32비트 혹은 64비트 프로세스의 실행파일 경로를 가져오는 함수입니다.
+        /// </summary>
+        /// <param name="process">실행파일 경로를 얻어올 프로세스입니다.</param>
         public static string GetProcessPath(Process process)
         {
             int size = 1024;
@@ -55,12 +61,13 @@ namespace Lococo
             return exeName.ToString();
         }
 
-        // 레지스트리에서 로스트아크 경로를 가져오는 함수
+        /// <summary>
+        /// 레지스트리로부터 로스트아크가 설치된 경로를 가져올 함수입니다. 설치되지 않았다면 null을 반환합니다.
+        /// </summary>
         public static string GetDirectoryPath()
         {
             string gamePath = null;
 
-            // 기본 경로: C:\Program Files (x86)\Smilegate\Games\LOSTARK
             RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\SGUP\Apps\45", false);
 
             if (key != null)
@@ -73,21 +80,23 @@ namespace Lococo
             return gamePath;
         }
 
-        // 로스트아크 실행파일 경로를 가져오는 함수
+        /// <summary>
+        /// 로스트아크 실행파일 경로를 가져오는 함수입니다. 설치되지 않았다면 null을 반환합니다.
+        /// </summary>
         public static string GetExecutablePath()
         {
             string gamePath = GetDirectoryPath();
             string exePath = gamePath + "\\Binaries\\Win64\\LOSTARK.exe";
 
             if (!File.Exists(exePath))
-            {
                 exePath = null;
-            }
 
             return exePath;
         }
 
-        // 로스트아크가 설치되어있는지 확인하는 함수
+        /// <summary>
+        /// 로스트아크가 설치되었는지 확인하는 함수입니다.
+        /// </summary>
         public static bool IsInstalled()
         {
             bool result = false;
@@ -95,20 +104,19 @@ namespace Lococo
 
             string lostark_exe = gamePath + @"\Binaries\Win64\LOSTARK.exe";
             if (File.Exists(lostark_exe))
-            {
                 result = true;
-            }
 
             return result;
         }
 
-        // 로스트아크가 구동중인지 확인하는 함수
+        /// <summary>
+        /// 현재 시스템에 로스트아크가 실행되어 있는지 확인하는 함수입니다.
+        /// </summary>
         public static bool IsRunning()
         {
-            if (!IsInstalled())
-            {
+            if (!IsInstalled())           
                 return false;
-            }
+            
 
             bool result = false;
             StringBuilder appTitle = new StringBuilder(null, 100);
@@ -133,7 +141,9 @@ namespace Lococo
 
 
 
-        // 로스트아크 실시간 화면 설정을 가져오는 함수
+        /// <summary>
+        /// 로스트아크의 화면 설정을 실시간으로 가져오는 함수입니다. 전체 화면인지, 전체 창모드인지, 창모드인지 구분하는 용도입니다.
+        /// </summary>
         public static ScreenOption GetScreenOption()
         {
             ScreenOption screen_option = new ScreenOption();
@@ -141,10 +151,9 @@ namespace Lococo
 
             string root_path = GetDirectoryPath();
             string config_path = root_path + "\\EFGame\\Config\\UserOption.xml"; 
-            if (!File.Exists(config_path))
-            {
+            if (!File.Exists(config_path))          
                 return screen_option;
-            }
+            
 
             XmlDocument doc = new XmlDocument();
             doc.Load(config_path);
@@ -173,6 +182,7 @@ namespace Lococo
 
             return screen_option;
         }
+
         public struct ScreenOption
         {
             public bool FullScreen;
