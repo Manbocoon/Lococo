@@ -92,8 +92,11 @@ namespace Lococo.Forms.menus
 
 
         #region App Functions
-        // 모험의 서 (로스트아크 인벤 지도)의 각 맵에 대한 링크 코드번호를 가져오는 함수
+
         private List<string> map_list = new List<string>();
+        /// <summary>
+        /// 모험의 서 (로스트아크 인벤 지도)의 각 맵에 대한 링크 코드번호를 가져옵니다.
+        /// </summary>
         private void getMapInfo()
         {
             map_list.Clear();
@@ -172,19 +175,88 @@ namespace Lococo.Forms.menus
             return result;
         }
 
-        private bool checkURLValid(string source)
+        private void ClearBrowsingData()
         {
-            bool result = false;
+            string cacheDirectory = null;
 
-            if (!source.StartsWith("http://") || !source.StartsWith("https://"))
-                source = "https://" + source;
+            string[] directories = Directory.GetDirectories(Program.Path);
+            foreach (string dirPath in directories)
+            {
+                if (dirPath.ToLower().EndsWith(".exe.webview2"))
+                    cacheDirectory = dirPath + "\\EBWebView";
+            }
 
-            if (source.IndexOf('.') > -1)
-                result = true;
+            string[] dir_exceptions = new string[] { "Default", "GrShaderCache", "ShaderCache" };
+            string[] rootDirs = Directory.GetDirectories(cacheDirectory);
+            foreach (string dir in rootDirs)
+            {
+                bool isException = false;
+                foreach (string exception in dir_exceptions)
+                {
+                    if (dir.EndsWith(exception))
+                    {
+                        isException = true;
+                        break;
+                    }
+                }
 
-            return result;
+                if (!isException)
+                {
+                    try
+                    { Directory.Delete(dir, true); }
+
+                    catch (Exception) { }
+                }
+            }
+
+            // 쿠키 = Network, Login Data, Local Storage
+            dir_exceptions = new string[] { "Network", "GPUCache", "Local Storage" };
+            string[] file_exceptions = new string[] { "Login Data", "History", "Visited Links", "Web Data", "WebAssistDatabase"};
+
+            rootDirs = Directory.GetDirectories(cacheDirectory + "\\Default");
+            foreach (string dir in rootDirs)
+            {
+                bool isException = false;
+                foreach (string exception in dir_exceptions)
+                {
+                    if (dir.EndsWith(exception))
+                    {
+                        isException = true;
+                        break;
+                    }
+                }
+
+                if (!isException)
+                {
+                    try
+                    { Directory.Delete(dir, true); }
+
+                    catch (Exception) { }
+                }
+            }
+
+            rootDirs = Directory.GetFiles(cacheDirectory + "\\Default");
+            foreach (string file in rootDirs)
+            {
+                bool isException = false;
+                foreach (string exception in file_exceptions)
+                {
+                    if (file.EndsWith(exception))
+                    {
+                        isException = true;
+                        break;
+                    }
+                }
+
+                if (!isException)
+                {
+                    try
+                    { File.Delete(file); }
+
+                    catch (Exception) { }
+                }
+            }
         }
-
         #endregion
 
 
@@ -206,13 +278,9 @@ namespace Lococo.Forms.menus
             }
         }
 
-
         private void menu_browser_Load(object sender, EventArgs e)
         {
-            // .NET WebView2 브라우저 임시파일 삭제
-            string exeName = Path.GetFileName(Program.EXE_PATH);
-            try { Directory.Delete(Application.StartupPath + @"\" + exeName + ".WebView2", true); }
-            catch (Exception) { }
+            ClearBrowsingData();
 
             // .NET WebView2 런타임이 설치되지 않으면 안내 메세지 남기기
             if (!checkWebview2RuntimeInstalled())
@@ -251,10 +319,10 @@ namespace Lococo.Forms.menus
             if (open_overlay.Checked)
             {
                 overlayUIForm = new overlay.mainUI();
-                overlayUIForm.opacity = (byte)opacity.Value;
+                overlayUIForm.Opacity = (float)opacity.Value / 100;
                 overlayUIForm.relying = relying.Checked;
                 overlayUIForm.Location = new Point((Program.screen.Width - overlayUIForm.Width) / 2, 0);
-                overlayUIForm.Show();
+                overlayUIForm.Show(this);
             }
 
             else
@@ -271,7 +339,6 @@ namespace Lococo.Forms.menus
 
                         overlay_browser.DisposeChilds();
                         overlay_browser.Dispose();
-                        overlay_browser.Close();
                     }
 
                     if (Program.IsActivated(overlayUIForm.overlayForm_image))
@@ -282,11 +349,9 @@ namespace Lococo.Forms.menus
 
                         overlay_image.DisposeChilds();
                         overlay_image.Dispose();
-                        overlay_image.Close();
                     }
 
                     overlayUIForm.Dispose();
-                    overlayUIForm.Close();
                 }
             }
 
@@ -315,7 +380,9 @@ namespace Lococo.Forms.menus
 
             if (Program.IsActivated(overlayUIForm))
             {
-                overlayUIForm.opacity = (byte)opacity.Value;
+                overlayUIForm.Opacity = (float)opacity.Value / 100;
+
+                overlay._public.SetChildOpacity(overlayUIForm, (float)opacity.Value / 100);
             }
         }
     }
