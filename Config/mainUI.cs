@@ -11,6 +11,9 @@ using System.Xml;
 
 namespace Lococo.Config
 {
+    /// <summary>
+    /// 오버레이 메뉴의 설정을 관리하는 객체입니다.
+    /// </summary>
     class mainUI : IDisposable
     {
         #region Global Variables
@@ -37,7 +40,7 @@ namespace Lococo.Config
 
 
 
-        private void ResetSettings()
+        private void GetDefaultSettings()
         {
             globalSettings.Overlay_Toggle = false;
             globalSettings.Relying_On_Game = false;
@@ -89,7 +92,7 @@ namespace Lococo.Config
 
         public void LoadSettings()
         {
-            ResetSettings();
+            GetDefaultSettings();
 
             if (!File.Exists(filePath))
                 return;
