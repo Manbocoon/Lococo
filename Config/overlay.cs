@@ -15,7 +15,7 @@ using Lococo.Forms.overlay;
 namespace Lococo.Config
 {
     /// <summary>
-    /// 브라우저 오버레이의 설정을 관리하는 객체입니다.
+    /// 모든 오버레이의 설정을 관리하는 객체입니다.
     /// </summary>
     class overlay : IDisposable
     {
@@ -42,7 +42,7 @@ namespace Lococo.Config
         }
 
         /// <summary>
-        /// 브라우저 오버레이의 설정을 담는 변수입니다.
+        /// 오버레이 창들의 설정을 담는 변수입니다.
         /// </summary>
 
         public Dictionary<string, object> Configs = new Dictionary<string, object>() 
@@ -119,7 +119,7 @@ namespace Lococo.Config
         }
 
         /// <summary>
-        /// 현재 브라우저 오버레이 설정을 자동으로 관리될 기본 파일로 저장합니다.
+        /// 현재 오버레이 창의 설정을 자동으로 관리될 기본 파일로 저장합니다.
         /// </summary>
         public void SaveSettings()
         {
@@ -127,7 +127,7 @@ namespace Lococo.Config
         }
 
         /// <summary>
-        /// 현재 브라우저 오버레이 설정을 특정 파일로 저장합니다.
+        /// 현재 오버레이 창의 설정을 특정 파일로 저장합니다.
         /// </summary>
         /// <param name="file_path">저장할 파일의 경로입니다.</param>
         public void SaveSettings(string file_path)
@@ -183,7 +183,7 @@ namespace Lococo.Config
         }
 
         /// <summary>
-        /// 자동 저장된 파일로부터 브라우저 오버레이 설정을 읽어들입니다.
+        /// 자동 저장된 파일로부터 오버레이 창의 설정을 읽어들입니다.
         /// </summary>
         public void ReadSettings()
         {
@@ -191,7 +191,7 @@ namespace Lococo.Config
         }
 
         /// <summary>
-        /// 특정 파일로부터 브라우저 오버레이 설정을 읽어들입니다.
+        /// 특정 파일로부터 오버레이 창의 설정을 읽어들입니다.
         /// </summary>
         /// <param name="file_path">읽을 파일의 경로입니다.</param>
         public void ReadSettings(string file_path)
@@ -240,7 +240,7 @@ namespace Lococo.Config
         }
 
         /// <summary>
-        /// 읽어들인 설정/즐겨찾기를 현재 켜져있는 브라우저 오버레이에 즉시 적용시킵니다.
+        /// 읽어들인 설정/즐겨찾기를 현재 켜져있는 오버레이 창에 즉시 적용시킵니다.
         /// </summary>
         public void ApplySettings()
         {
@@ -325,7 +325,7 @@ namespace Lococo.Config
         }
 
         /// <summary>
-        /// 단일 즐겨찾기 파일로부터 브라우저 오버레이 설정을 읽어옵니다.
+        /// 단일 즐겨찾기 파일로부터 오버레이 창의 설정을 읽어옵니다.
         /// </summary>
         /// <param name="fav_name">읽어올 즐겨찾기 파일의 이름입니다.</param>
         public void ReadFavorite(string fav_name)
@@ -335,7 +335,7 @@ namespace Lococo.Config
 
 
         /// <summary>
-        /// 현재 브라우저 오버레이의 설정을 단일 즐겨찾기 파일로 저장합니다.
+        /// 현재 오버레이 창의의 설정을 단일 즐겨찾기 파일로 저장합니다.
         /// </summary>
         /// <param name="fav_name">저장할 즐겨찾기 파일의 이름입니다.</param>
         public void SaveFavorite(string fav_name)
