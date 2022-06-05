@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 
 namespace Lococo.Functions
 {
+    /// <summary>
+    /// 브라우저 오버레이에 Internet Explorer을 사용할 경우, 버전을 11로 올리는 객체입니다. 현재는 사용되지 않습니다.
+    /// </summary>
     class changeIEVersion : IDisposable
     {
         public enum BrowserEmulationVersion
