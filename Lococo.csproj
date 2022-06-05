@@ -75,7 +75,7 @@
     <ApplicationManifest>Resources\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>icon_app.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\Icons\icon_app.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -166,8 +166,7 @@
     <Compile Include="Forms\menus\menu_chatOption.Designer.cs">
       <DependentUpon>menu_chatOption.cs</DependentUpon>
     </Compile>
-    <Compile Include="Config\image.cs" />
-    <Compile Include="Config\browser.cs" />
+    <Compile Include="Config\overlay.cs" />
     <Compile Include="Config\mainUI.cs" />
     <Compile Include="Config\_public.cs" />
     <Compile Include="Forms\overlay\o_image_sizer.cs">
@@ -175,6 +174,12 @@
     </Compile>
     <Compile Include="Forms\overlay\o_image_sizer.Designer.cs">
       <DependentUpon>o_image_sizer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\overlay\UI\Bar\favorites.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\overlay\UI\Bar\favorites.Designer.cs">
+      <DependentUpon>favorites.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\overlay\UI\Bar\slider.cs">
       <SubType>Form</SubType>
@@ -224,6 +229,7 @@
     <Compile Include="Forms\overlay\o_image.Designer.cs">
       <DependentUpon>o_image.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\overlay\_public.cs" />
     <Compile Include="Functions\changeIEVersion.cs" />
     <Compile Include="Functions\Game.cs" />
     <Compile Include="Functions\Imaging.cs" />
@@ -245,7 +251,6 @@
     <Compile Include="Functions\UI\flatCheckBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Functions\UI\MenuColorTable.cs" />
     <Compile Include="Functions\UI\Slider\Slider.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -274,6 +279,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\overlay\o_image_sizer.resx">
       <DependentUpon>o_image_sizer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\overlay\UI\Bar\favorites.resx">
+      <DependentUpon>favorites.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\overlay\UI\Bar\slider.resx">
       <DependentUpon>slider.cs</DependentUpon>
@@ -337,7 +345,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="icon_app.ico" />
     <Content Include="Resources\Icons\icon_app.ico" />
     <None Include="Resources\images\star.png" />
     <None Include="Resources\images\settings_small.png" />
