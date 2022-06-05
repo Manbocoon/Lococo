@@ -18,37 +18,7 @@ namespace Lococo.Forms.overlay.UI.Bar
 {
     public partial class s_image : Form
     {
-        #region Global Variables
-        public o_image ParentForm { get; set; }
-
-        private byte opacityUI_value = 80;
-        public byte opacityUI
-        {
-            get
-            {
-                Invoke((MethodInvoker)delegate
-                {
-                    opacityUI_value = (byte)(this.Opacity * 100);
-                });
-
-                return opacityUI_value;
-            }
-
-            set
-            {
-                opacityUI_value = value;
-
-                if (IsHandleCreated)
-                {
-                    Opacity = (double)value / 100;
-                }
-            }
-        }
-        #endregion
-
-
-
-
+        private o_image owner;
 
         public s_image()
         {
@@ -73,10 +43,9 @@ namespace Lococo.Forms.overlay.UI.Bar
 
         private void LoadSettings()
         {
-            file_path.Text = ParentForm.imgPath;
-
-            original.Checked = ParentForm.useOriginalSize;
-            ratio.Checked = ParentForm.SizerForm.keepRatio;
+            file_path.Text = owner.imgPath;
+            original.Checked = owner.useOriginalSize;
+            ratio.Checked = owner.keepRatio;
         }
 
 
@@ -89,9 +58,11 @@ namespace Lococo.Forms.overlay.UI.Bar
 
             this.WindowState = FormWindowState.Normal;
 
-            if (Program.IsActivated(ParentForm) && Program.IsActivated(ParentForm.SizerForm))
+            owner = (o_image)Owner;
+
+            if (Program.IsActivated(owner) && Program.IsActivated(owner.SizerForm))
             {
-                ParentForm.SizerForm.ChildForm = this;
+                owner.SettingsForm = this;
 
                 LoadSettings();
             }
@@ -109,11 +80,17 @@ namespace Lococo.Forms.overlay.UI.Bar
                 fileDialog.CheckFileExists = true;
                 fileDialog.CheckPathExists = true;
 
-                DialogResult user_input = fileDialog.ShowDialog();
-                if (user_input == DialogResult.Cancel)
+                if (Path.IsPathRooted(file_path.Text))
                 {
-                    return;
+                    string origDir = Path.GetDirectoryName(file_path.Text);
+                    if (Directory.Exists(origDir))
+                        fileDialog.InitialDirectory = origDir;
                 }
+
+                DialogResult user_input = fileDialog.ShowDialog();
+                if (user_input == DialogResult.Cancel)                
+                    return;
+                
 
                 if (!Imaging.IsSupportedImage(fileDialog.FileName))
                 {
@@ -127,21 +104,23 @@ namespace Lococo.Forms.overlay.UI.Bar
 
         private void update_file_Click(object sender, EventArgs e)
         {
-            if (Program.IsActivated(ParentForm))
+            if (Program.IsActivated(owner))
             {
-                ParentForm.imgPath = file_path.Text;
+                owner.imgPath = file_path.Text;
 
                 if (original.Checked)
                 {
                     Size img_original = Imaging.GetImageSize(file_path.Text);
 
-                    ParentForm.updateImage(file_path.Text, ParentForm.opacity, img_original.Width, img_original.Height);
+                    owner.updateImage(file_path.Text, owner.opacity, img_original.Width, img_original.Height);
                 }
 
                 else
                 {
-                    ParentForm.updateImage(file_path.Text, ParentForm.opacity, ParentForm.SizerForm.Width, ParentForm.SizerForm.Height);
+                    owner.updateImage(file_path.Text, owner.opacity, owner.SizerForm.Width, owner.SizerForm.Height);
                 }
+
+                _public.PlaceChilds(owner);
             }
 
         }
@@ -156,17 +135,16 @@ namespace Lococo.Forms.overlay.UI.Bar
 
         private void ratio_Click(object sender, EventArgs e)
         {
-            if (!Program.IsActivated(ParentForm))
-            {
+            if (!Program.IsActivated(owner))           
                 return;
-            }
 
-            ParentForm.SizerForm.keepRatio = ratio.Checked;
+
+            owner.keepRatio = ratio.Checked;
             
             if (ratio.Checked && !original.Checked)
             {
-                ParentForm.SizerForm.CorrectFormRatio(true);
-                ParentForm.SizerForm.ResizeImage();
+                owner.SizerForm.CorrectFormRatio(true);
+                owner.SizerForm.ResizeImage();
             }
 
         }
@@ -179,12 +157,10 @@ namespace Lococo.Forms.overlay.UI.Bar
 
         private void original_Click(object sender, EventArgs e)
         {
-            if (!Program.IsActivated(ParentForm))
-            {
+            if (!Program.IsActivated(owner))         
                 return;
-            }
 
-            ParentForm.useOriginalSize = original.Checked;
+            owner.useOriginalSize = original.Checked;
         }
     }
 }
