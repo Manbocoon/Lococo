@@ -18,7 +18,7 @@ namespace Lococo
         public static readonly string EXE_PATH = Application.ExecutablePath;
 
         public static readonly string APP_NAME = "Lococo";
-        public static readonly string VERSION = "2022 06 05";
+        public static readonly string VERSION = "2022 06 08";
         #endregion
 
         #region Static Functions
