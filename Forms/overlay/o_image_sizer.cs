@@ -241,6 +241,15 @@ namespace Lococo.Forms.overlay
             _public.PlaceChilds(owner);
         }
 
+
+        public void CallResizeEvent()
+        {
+            ResizedByParent = true;
+            ++this.Width;
+
+            ResizedByParent = false;
+            --this.Width;
+        }
         #endregion
 
 
