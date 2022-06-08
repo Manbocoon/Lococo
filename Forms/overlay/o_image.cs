@@ -413,7 +413,7 @@ namespace Lococo.Forms.overlay
 
             else
             {
-                if (target_img == null)
+                if (target_img != null)
                     target_img.Dispose();
 
                 if (keepRatio)
