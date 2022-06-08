@@ -106,19 +106,11 @@ namespace Lococo.Forms.overlay.UI.Bar
         {
             if (Program.IsActivated(owner))
             {
-                owner.imgPath = file_path.Text;
-
                 if (original.Checked)
-                {
-                    Size img_original = Imaging.GetImageSize(file_path.Text);
+                    owner.SizerForm.Size = Imaging.GetImageSize(file_path.Text);
 
-                    owner.updateImage(file_path.Text, owner.opacity, img_original.Width, img_original.Height);
-                }
-
-                else
-                {
-                    owner.updateImage(file_path.Text, owner.opacity, owner.SizerForm.Width, owner.SizerForm.Height);
-                }
+                owner.imgPath = file_path.Text;
+                owner.SizerForm.ResizeImage();
 
                 _public.PlaceChilds(owner);
             }
