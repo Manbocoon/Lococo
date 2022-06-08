@@ -411,16 +411,22 @@ namespace Lococo.Forms.overlay
                 return;
             }
 
-            if (target_img == null)            
-                target_img = new Bitmap(1, 1);
-            
-            if (target_img.Width != new_width || target_img.Height != new_height)
+            else
             {
-                target_img.Dispose();
+                if (target_img == null)
+                    target_img.Dispose();
+
+                if (keepRatio)
+                {
+                    SizerForm.CorrectFormRatio(true);
+                    new_width = SizerForm.Width;
+                    new_height = SizerForm.Height;
+                }
 
                 target_img = SaveResizedImage(img_path, new_width, new_height);
                 SelectBitmap(target_img, (int)(255 * (float)opacity / 100));
             }
+
 
             // Form(이미지)의 Width/Height 값을 정상적으로 받아오려면 폼을 1회 움직여야함
             Invoke((MethodInvoker)delegate () 
