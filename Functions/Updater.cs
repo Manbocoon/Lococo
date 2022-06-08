@@ -161,18 +161,26 @@ namespace Lococo.Functions
             }*/
 
             // Trim된 결과물 = <title>Release 버전명 · 아이디/Repository명 · GitHub</title>
-            string version = name_and_version;
-            version = version.Remove(0, version.IndexOf(' ') + 1);
-            version = version.Remove(version.IndexOf('·') - 1);
+            try
+            {
+                string version = name_and_version;
+                version = version.Remove(0, version.IndexOf(' ') + 1);
+                version = version.Remove(version.IndexOf('·') - 1);
 
-            string name = name_and_version;
-            name = name.Remove(0, name.IndexOf("bumju08/") + 8);
-            name = name.Remove(name.IndexOf("·") - 1);
+                string name = name_and_version;
+                name = name.Remove(0, name.IndexOf("bumju08/") + 8);
+                name = name.Remove(name.IndexOf("·") - 1);
 
-            AppInfo.Version = version;
-            AppInfo.Name = name;
+                AppInfo.Version = version;
+                AppInfo.Name = name;
 
-            SetLastCheckedDate();
+                SetLastCheckedDate();
+            }
+
+            catch (Exception)
+            {
+                AppInfo.Name = "SERVER NOT AVAILABLE";
+            }
 
             return AppInfo;
         }
